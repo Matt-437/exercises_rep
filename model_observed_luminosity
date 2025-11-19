@@ -1,1 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+import math
 
+## data
+avg_lumin = 10
+dev_std = 0.1
+dev_err = 0.01*5
+
+# sample simulation:
+sample_size = 1000000
+err_arr = np.random.normal(0, dev_err, sample_size)
+lum_arr = np.random.normal(avg_lumin, dev_std, sample_size)
+sim_sample = err_arr + lum_arr
+
+
+mu = avg_lumin
+
+x = np.linspace(mu - 3*dev_std, mu + 3*dev_std, 100)
+#plt.plot(x, stats.norm.pdf(x, mu, dev_std))
+#plt.show()
+lum_range = np.linspace(mu - 4*dev_std, mu + 4*dev_std, 1000)
+
+true_luminosity_pdf = norm.pdf(lum_range, loc=mu, scale=dev_std)
+measurement_error_pdf = norm.pdf(lum_range, loc=mu, scale=dev_err)
+
+convoluted_pdf = np.convolve(true_luminosity_pdf, measurement_error_pdf, mode='same')
+convoluted_pdf /= np.trapezoid(convoluted_pdf, lum_range)  # Normalizza la distribuzione risultante
+plt.hist(sim_sample, bins = 100, density = True, color="green")
+plt.hist(lum_arr, bins = 100, density = True)
+plt.plot(lum_range, convoluted_pdf, color='orange')
+plt.show()
