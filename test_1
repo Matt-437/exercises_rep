@@ -1,1 +1,15 @@
-print "my nasus"
+import numpy as np
+import matplotlib.pyplot as plt
+N = 400
+rng = np.random.default_rng()
+
+cauchy_points = rng.standard_cauchy(size=(N,N,N))
+cauchy_mean = np.mean(cauchy_points, axis=0)
+cauchy_mean_mean = np.mean(cauchy_mean, axis=0)
+
+print(cauchy_points.shape, cauchy_mean.shape, cauchy_mean_mean.shape)
+
+bins = np.linspace(-10, 10, 200)
+plt.hist(cauchy_mean.flatten(), bins=bins)
+plt.yscale("log")
+plt.show()
